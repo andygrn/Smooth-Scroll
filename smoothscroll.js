@@ -8,8 +8,7 @@ window.smoothScroll = ( function(){
 			return easing_function( limited_uneased_percentage );
 		};
 	}
-	function scroll( scroll_y_target_pos, duration ){
-		window.clearTimeout( timer );
+	function scroll( scroll_y_target_pos, duration, end_callback ){
 		var initial_pos = ( window.pageYOffset !== undefined ) ? window.pageYOffset : document.documentElement.scrollTop;
 		var scroll_y_pos = initial_pos;
 		var difference = Math.abs( scroll_y_pos - scroll_y_target_pos );
@@ -20,10 +19,10 @@ window.smoothScroll = ( function(){
 			var approach = initial_pos < scroll_y_target_pos ? Math.abs( scroll_y_pos - initial_pos ) : Math.abs( scroll_y_pos - scroll_y_target_pos );
 			window.scrollTo( 0, Math.round( easer( approach / difference ) * difference ) + ( initial_pos < scroll_y_target_pos ? initial_pos : scroll_y_target_pos ) );
 			if( ( increment >= 0 && scroll_y_pos >= scroll_y_target_pos ) || ( increment < 0 && scroll_y_pos <= scroll_y_target_pos ) ){
-				window.clearTimeout( timer );
+				end_callback();
 				return;
 			}
-			timer = window.setTimeout( tick, 13 );
+			requestAnimFrame( tick );
 		};
 		tick();
 	}
