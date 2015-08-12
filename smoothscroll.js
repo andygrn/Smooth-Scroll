@@ -19,7 +19,9 @@ window.smoothScroll = ( function(){
 			var approach = initial_pos < scroll_y_target_pos ? Math.abs( scroll_y_pos - initial_pos ) : Math.abs( scroll_y_pos - scroll_y_target_pos );
 			window.scrollTo( 0, Math.round( easer( approach / difference ) * difference ) + ( initial_pos < scroll_y_target_pos ? initial_pos : scroll_y_target_pos ) );
 			if( ( increment >= 0 && scroll_y_pos >= scroll_y_target_pos ) || ( increment < 0 && scroll_y_pos <= scroll_y_target_pos ) ){
-				end_callback();
+				if( end_callback ){
+					end_callback();
+				}
 				return;
 			}
 			requestAnimFrame( tick );
